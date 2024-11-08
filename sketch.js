@@ -1,8 +1,8 @@
 let paint1, paint2, paint3, paint4, paint5, paint6, paint7, paint8;
-let img
+let img;
 
 function preload() {
-  img = loadImage("me.png")
+  img = loadImage("me.png");
 }
 
 function setup() {
@@ -32,17 +32,28 @@ function draw() {
   paint8.display();
 }
 
-
 function Paint(tempPaintColor, speed) {
   this.paintColor = tempPaintColor;
+  this.targetColor1 = color(random(255), random(255), random(255));
+  this.targetColor2 = color(random(255), random(255), random(255));
   this.paintXposition = random(width); 
-  this.paintYposition = 0; 
+  this.paintYposition = 0;
   this.paintRadius = 35;
-  this.speed = speed; 
+  this.speed = speed;
+  this.colorChangeSpeed = 0.02;
+  this.startColorChangeY = random(height / 3, height / 2);
+  this.startSecondColorChangeY = random(height * 0.7, height * 0.85);
 
   this.display = function() {
-
     if (this.paintYposition < height + this.paintRadius / 2) {
+
+      if (this.paintYposition > this.startColorChangeY && this.paintYposition < this.startSecondColorChangeY) {
+        this.paintColor = lerpColor(this.paintColor, this.targetColor1, this.colorChangeSpeed);
+
+      } else if (this.paintYposition > this.startSecondColorChangeY) {
+        this.paintColor = lerpColor(this.paintColor, this.targetColor2, this.colorChangeSpeed);
+      }
+
       fill(this.paintColor);
       circle(this.paintXposition, this.paintYposition, this.paintRadius);
 
